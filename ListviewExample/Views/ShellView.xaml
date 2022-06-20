@@ -6,29 +6,44 @@
         xmlns:local="clr-namespace:ListviewExample.Views"
         mc:Ignorable="d" FontSize="18"
         Title="ShellView" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="{Binding Path=FullName, Mode=OneWay}" Grid.Row="1" Grid.Column="1"
-                   Grid.ColumnSpan="2"></TextBlock>
-        <TextBox x:Name="FirstName" MinWidth="100" Grid.Row="2" Grid.Column="1"></TextBox>
-        <TextBox x:Name="LastName" MinWidth="100" Grid.Row="2" Grid.Column="2"></TextBox>
-    </Grid>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" ShowGridLines="True">
+            <TextBlock Text="Listening some music:" Background="Gray" FontSize="30"></TextBlock>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom" ShowGridLines="True">
+            <TextBlock Text="Hello World" Background="Gray" FontSize="30"></TextBlock>
+        </Grid>
+        <Grid x:Name="People">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListView Grid.Column="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn x:Name="FirstName" Header="Name"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView Grid.Column="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn x:Name="LastName" Header="Name"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView Grid.Column="2">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn x:Name="Age" Header="Name"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </DockPanel>   
 </Window>
