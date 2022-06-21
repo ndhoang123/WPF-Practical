@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ListviewExample.Models;
+using LiteDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,28 @@ namespace ListviewExample.Views
 	/// </summary>
 	public partial class ShellView : Window
 	{
+		private string connectionString = @"E:\Coding-draft\dotNet\WPF\ListviewExample\ListviewExample\Customer.db";
 		public ShellView()
 		{
 			InitializeComponent();
 		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			using (var db = new LiteDatabase(connectionString))
+			{
+				var col = db.GetCollection<PersonModel>("Person");
+
+				var person = new PersonModel
+				{
+					FirstName = "John",
+					LastName = "Doe",
+					Age = 13
+				};
+
+				col.Insert(person);
+			}
+		}
+
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
+using ListviewExample.Instant;
 using ListviewExample.Models;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +65,14 @@ namespace ListviewExample.ViewModels
 			get { return _people; }
 			set { _people = value; }
 		}
+		public void LiteDB_ListAll()
+		{
+			using (var db = new LiteDatabase(InstantValue.connectionString))
+			{
+				var collection = db.GetCollection<PersonModel>("Person");
 
+			}
+		}
 	}
 	public class ScrollablePanel : StackPanel
 	{
