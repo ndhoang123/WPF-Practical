@@ -14,15 +14,19 @@ namespace ListviewExample.ViewModels
 {
 	public class ShellViewModel : Screen
 	{
-		private string _firstName = "Sergio";
+		private string _firstName;
+
+		private string connectionString = @"E:\Coding-draft\dotNet\WPF\ListviewExample\ListviewExample\Customer.db";
 
 		private string _lastName;
 
+		private int _age;
+
+		private BindableCollection<PersonModel> _people = new BindableCollection<PersonModel>();
+
 		public ShellViewModel()
 		{
-			People.Add(new PersonModel { FirstName = "Tim", LastName = "Corey", Age = 12 });
-			People.Add(new PersonModel { FirstName = "Bill", LastName = "Jonas", Age = 15 });
-			People.Add(new PersonModel { FirstName = "Sue", LastName = "Corey", Age = 21 });
+			LiteDB_ListAll();
 		}
 
 		public string FirstName
@@ -35,7 +39,6 @@ namespace ListviewExample.ViewModels
 			{
 				_firstName = value;
 				NotifyOfPropertyChange(() => FirstName);
-				NotifyOfPropertyChange(() => FullName);
 			}
 		}
 
@@ -49,16 +52,18 @@ namespace ListviewExample.ViewModels
 			{
 				_lastName = value;
 				NotifyOfPropertyChange(() => LastName);
-				NotifyOfPropertyChange(() => FullName);
 			}
 		}
 
-		public string FullName
-		{
-			get { return $"{FirstName} {LastName}"; }
-		}
 
-		private BindableCollection<PersonModel> _people = new BindableCollection<PersonModel>();
+		public int Age
+		{
+			get { return _age; }
+			set { 
+				_age = value;
+				NotifyOfPropertyChange(() => Age);
+			}
+		}
 
 		public BindableCollection<PersonModel> People
 		{
@@ -67,37 +72,52 @@ namespace ListviewExample.ViewModels
 		}
 		public void LiteDB_ListAll()
 		{
-			using (var db = new LiteDatabase(InstantValue.connectionString))
+			using (var db = new LiteDatabase(connectionString))
 			{
 				var collection = db.GetCollection<PersonModel>("Person");
+				People.Clear();
 
+				var count = collection.Count(Query.All());
+
+				foreach(var customer in collection.FindAll())
+				{
+					People.Add(customer);
+				}
 			}
 		}
-	}
-	public class ScrollablePanel : StackPanel
-	{
-		protected override Size MeasureOverride(Size constraint)
+
+		public void Insert_LiteDB()
 		{
-			Size tmpSize = base.MeasureOverride(constraint);
-			tmpSize.Height = (double)(this.Children[0] as UIElement).GetValue(MinHeightProperty);
-			return tmpSize;
+			using (var db = new LiteDatabase(connectionString))
+			{
+				var col = db.GetCollection<PersonModel>("Person");
+
+				var person = new PersonModel
+				{
+					FirstName = FirstName,
+					LastName = LastName,
+					Age = Age
+				};
+
+				col.Insert(person);
+			}
+
+			LiteDB_ListAll();
 		}
 
-		protected override System.Windows.Size ArrangeOverride(System.Windows.Size finalSize)
+		public void Open_Dialog()
 		{
-			Size tmpSize = new Size(0, 0);
+			var dialog = new Microsoft.Win32.OpenFileDialog();
+			dialog.FileName = "Document";
+			dialog.DefaultExt = ".txt";
+			dialog.Filter = "Text documents (.txt)|*.txt";
 
-			//Width stays the same
-			tmpSize.Width = finalSize.Width;
+			bool? result = dialog.ShowDialog();
 
-			//Height is changed
-			tmpSize.Height = finalSize.Height;
-
-			//This works only for one child!
-			this.Children[0].SetCurrentValue(HeightProperty, tmpSize.Height);
-			this.Children[0].Arrange(new Rect(new Point(0, 0), tmpSize));
-
-			return tmpSize;
+			if(result == true)
+			{
+				string fileName = dialog.FileName;
+			}
 		}
 	}
 }

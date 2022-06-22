@@ -16,22 +16,24 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0"/>
-            <TextBox Grid.Column="1"/>
-            <TextBox Grid.Column="2"/>
-            <Button Grid.Column="3" Height="28" VerticalAlignment="Top" Click="Button_Click">Click!</Button>
+            <TextBox Grid.Column="0" x:Name="FirstName"/>
+            <TextBox Grid.Column="1" x:Name="LastName"/>
+            <TextBox Grid.Column="2" x:Name="Age"/>
+            <Button Grid.Column="3" Height="28" VerticalAlignment="Top" x:Name="Insert_LiteDB">Click!</Button>
+            <Button Grid.Column="4" Height="28" VerticalAlignment="Top" x:Name="Open_Dialog">Open!</Button>
         </Grid>
         <Grid>
-            <ListView>
+            <ListView x:Name="People">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="Age" Width="120" DisplayMemberBinding="{Binding Age}"/>
-                        <GridViewColumn Header="Mail" Width="150">
+                        <GridViewColumn Header="FirstName" Width="120" DisplayMemberBinding="{Binding FirstName}"/>
+                        <GridViewColumn Header="LastName" Width="120" DisplayMemberBinding="{Binding LastName}"/>
+                        <GridViewColumn Header="Age" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Mail}" TextDecorations="Underline" Foreground="Blue" Cursor="Hand"></TextBlock>
+                                    <TextBlock Text="{Binding Age}" TextDecorations="Underline" Foreground="Blue" Cursor="Hand"></TextBlock>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
